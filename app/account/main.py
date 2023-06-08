@@ -1,7 +1,9 @@
 from fastapi import FastAPI
+
+from app.account.routers import accounts
+
 from . import models
 from .database import engine
-from app.account.routers import accounts
 
 app = FastAPI()
 
