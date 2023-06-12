@@ -9,6 +9,7 @@ class CountryCreate(BaseModel):
     order: Optional[int] = 0
 
 class ShowCountry(BaseModel):
+    id: Optional[int]
     title: Optional[str]
     title_ne: Optional[str]
     code: Optional[str]
@@ -42,7 +43,7 @@ class ShowProvince(BaseModel):
     title_ne: Optional[str]
     code: Optional[str]
     order: Optional[int]
-    country: Optional[int]
+    country: Optional[ShowCountry]
 
     class Config():
         orm_mode = True

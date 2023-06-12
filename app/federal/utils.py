@@ -160,26 +160,33 @@ def patch_country(id: int, request: schemas.UpdateCountry, db: Session):
 
 def create_province(request: schemas.ProvinceCreate, db: Session):
     """
-    This function creates a new province in the database based on the provided request data.
+    This function creates a new province in the database with the given information and returns the
+    created province.
     
-    :param request: schemas.ProvinceCreate - This is a Pydantic model that defines the structure of the
-    request body for creating a new province. It contains the following fields: title (str), title_ne
-    (str), code (str), order (int), and country (str)
+    :param request: The request parameter is an instance of the ProvinceCreate class defined in the
+    schemas module. It contains the data required to create a new province in the database, including
+    the province title, title in Nepali language, province code, order, and the ID of the country to
+    which the province belongs
     :type request: schemas.ProvinceCreate
     :param db: The "db" parameter is a database session object that is used to interact with the
-    database. It is passed as an argument to the function and is used to add the newly created province
-    object to the database, commit the changes, and refresh the object to ensure that it reflects any
-    changes made during the
+    database. It is passed as an argument to the function and is used to query and modify the database.
+    The session object is created using a database connection and provides a transactional scope for all
+    the database operations
     :type db: Session
-    :return: The function `create_province` returns an instance of the `Province` model that has been
-    created and added to the database.
+    :return: an instance of the `Province` model that has been created and saved to the database.
     """
+    country = db.query(models.Country).filter(models.Country.id == request.country).first()
+    if country is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Country with the id {request.country} is not found"
+        )
     province = models.Province(
         title = request.title,
         title_ne = request.title_ne,
         code = request.code,
         order = request.order,
-        country = request.country
+        country = country.id
     )
     db.add(province)
     db.commit()
