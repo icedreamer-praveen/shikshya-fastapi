@@ -249,3 +249,71 @@ def delete_province(id: int, db: Session):
     return {
         "message": "Province deleted successfully"
     }
+
+def update_province(id: int, request: schemas.UpdateProvince, db: Session):
+    """
+    This function updates a province in the database based on the provided ID and request data.
+    
+    :param id: The id parameter is an integer that represents the unique identifier of the province that
+    needs to be updated
+    :type id: int
+    :param request: The `request` parameter is of type `schemas.UpdateProvince`, which is a Pydantic
+    model representing the fields that can be updated for a `Province` object. The
+    `dict(exclude_unset=True)` method call on `request` returns a dictionary of the fields and their
+    values that have been
+    :type request: schemas.UpdateProvince
+    :param db: The "db" parameter is a database session object that is used to interact with the
+    database. It is passed as an argument to the function and is used to query and update the database.
+    The session object is typically created using a database engine and a connection pool, and it
+    provides a transactional scope
+    :type db: Session
+    :return: an instance of the updated province model.
+    """
+    province = db.query(models.Province).filter(models.Province.id == id).first()
+    if province is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Province with the id {id} is not found"
+        )
+    for field, value in request.dict(exclude_unset=True).items():
+        setattr(province, field, value)
+
+    db.commit()
+    db.refresh(province)
+    return province
+
+def patch_province(id: int, request: schemas.UpdateProvince, db: Session):
+    """
+    This function updates a province in the database based on the provided ID and request data.
+    
+    :param id: The ID of the province that needs to be updated
+    :type id: int
+    :param request: The request parameter is of type schemas.UpdateProvince, which is a Pydantic model
+    that defines the fields that can be updated for a Province object. It contains the following fields:
+    :type request: schemas.UpdateProvince
+    :param db: The `db` parameter is an instance of a database session, which is used to interact with
+    the database and perform CRUD (Create, Read, Update, Delete) operations on the `Province` model. It
+    is passed as an argument to the function so that the function can access the database and make
+    :type db: Session
+    :return: an instance of the updated province model.
+    """
+    province = db.query(models.Province).filter(models.Province.id == id).first()
+    if province is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Province with the id {id} is not found"
+        )
+    if request.title:
+        province.title = request.title
+    if request.title_ne:
+        province.title_ne = request.title_ne
+    if request.code:
+        province.code = request.code
+    if request.order:
+        province.order = request.order
+    if request.country:
+        province.country = request.country
+
+    db.commit()
+    db.refresh(province)
+    return province

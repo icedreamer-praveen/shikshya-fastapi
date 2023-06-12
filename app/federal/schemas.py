@@ -36,3 +36,38 @@ class UpdateProvince(BaseModel):
     code: Optional[str]
     order: Optional[int]
     country: Optional[int]
+
+class ShowProvince(BaseModel):
+    title: Optional[str]
+    title_ne: Optional[str]
+    code: Optional[str]
+    order: Optional[int]
+    country: Optional[int]
+
+    class Config():
+        orm_mode = True
+
+
+class DistrictCreate(BaseModel):
+    title: Optional[str]
+    title_ne: Optional[str]
+    code: Optional[str] = None
+    order: Optional[int] = 0
+    province: int
+
+class UpdateDistrict(BaseModel):
+    title: Optional[str]
+    title_ne: Optional[str]
+    code: Optional[str]
+    order: Optional[int]
+    province: Optional[int]
+
+class ShowDistrict(BaseModel):
+    title: Optional[str]
+    title_ne: Optional[str]
+    code: Optional[str]
+    order: Optional[int]
+    province: Optional[int]
+
+    class Config():
+        orm_mode = True

@@ -162,7 +162,7 @@ def create_province(request: schemas.ProvinceCreate, db: Session = Depends(get_d
     """
     return utils.create_province(request, db)
 
-@router.get('/province/{id}/', status_code=status.HTTP_200_OK, response_model=None)
+@router.get('/province/{id}/', status_code=status.HTTP_200_OK, response_model=schemas.ShowProvince)
 def get_province(id: int, db: Session = Depends(get_db)):
     """
     This function retrieves a province from a database based on its ID.
@@ -198,4 +198,47 @@ def delete_province(id: int, db: Session = Depends(get_db)):
     function is executed using the `db` session obtained from the `get_db
     """
     return utils.delete_province(id, db)
+
+@router.put('/province/{id}/', status_code=status.HTTP_200_OK, response_model=None)
+def update_province(id: int, request: schemas.UpdateProvince, db: Session = Depends(get_db)):
+    """
+    This function updates a province in the database based on the provided ID and request data.
+    
+    :param id: The ID of the province that needs to be updated
+    :type id: int
+    :param request: schemas.UpdateProvince is a Pydantic model that defines the structure of the request
+    body for updating a province. It likely contains fields such as the province name, population, and
+    other relevant information that can be updated
+    :type request: schemas.UpdateProvince
+    :param db: The "db" parameter is a database session object that is passed to the function using the
+    "Depends" function from the FastAPI framework. This allows the function to access the database and
+    perform CRUD (Create, Read, Update, Delete) operations on the "Province" table. The session object
+    :type db: Session
+    :return: The function `update_province` is returning the result of calling the
+    `utils.update_province` function with the provided arguments `id`, `request`, and `db`. The specific
+    return value of `utils.update_province` is not specified in this code snippet.
+    """
+    return utils.update_province(id, request, db)
+
+@router.patch('/province/{id}/', status_code=status.HTTP_200_OK, response_model=None)
+def patch_province(id: int, request: schemas.UpdateProvince, db: Session = Depends(get_db)):
+    """
+    This function patches a province in the database with the provided ID and update request.
+    
+    :param id: an integer representing the ID of the province to be updated
+    :type id: int
+    :param request: schemas.UpdateProvince is likely a Pydantic model that defines the structure and
+    validation rules for the request body of a PATCH request to update a province in a database. It
+    could contain fields such as name, population, area, etc
+    :type request: schemas.UpdateProvince
+    :param db: The "db" parameter is a dependency injection that provides a database session to the
+    function. It is used to interact with the database and perform CRUD (Create, Read, Update, Delete)
+    operations. The "Session" type is imported from the SQLAlchemy library and represents a connection
+    to the database. The
+    :type db: Session
+    :return: The function `patch_province` is returning the result of calling the `utils.patch_province`
+    function with the provided arguments `id`, `request`, and `db`. The specific return value will
+    depend on the implementation of the `utils.patch_province` function.
+    """
+    return utils.patch_province(id, request, db)
 
