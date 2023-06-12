@@ -1,4 +1,3 @@
-from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.federal import models, schemas
@@ -26,7 +25,7 @@ def create(request: schemas.CountryCreate, db: Session):
     db.add(country)
     db.commit()
     db.refresh(country)
-    return db
+    return country
 
 def get_all(db: Session):
     """

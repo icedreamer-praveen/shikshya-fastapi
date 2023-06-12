@@ -1,7 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
-from app.federal import models, schemas, utils
+from app.federal import schemas, utils
 from app.account import database
 
 get_db = database.get_db
@@ -11,7 +11,7 @@ router = APIRouter(
     tags=['Federal']
 )
 
-@router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.ShowCountry)
+@router.post('/', status_code=status.HTTP_201_CREATED)
 def create(request: schemas.CountryCreate, db: Session = Depends(get_db)):
     """
     This function creates a new country record in the database using the provided request data.
@@ -30,7 +30,7 @@ def create(request: schemas.CountryCreate, db: Session = Depends(get_db)):
     """
     return utils.create(request, db)
 
-@router.get('/', status_code=status.HTTP_200_OK, response_model=schemas.ShowCountry)
+@router.get('/', status_code=status.HTTP_200_OK, response_model=None)
 def get_all(db: Session = Depends(get_db)):
     """
     This function retrieves all data from a database using a helper function.
