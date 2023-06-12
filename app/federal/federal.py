@@ -126,21 +126,6 @@ def patch_country(id: int, request: schemas.UpdateCountry, db: Session = Depends
     return utils.patch_country(id, request, db)
 
 
-@router.get('/provinces/', status_code=status.HTTP_200_OK, response_model=None)
-def get_all_province(db: Session = Depends(get_db)):
-    """
-    This function retrieves all provinces from a database using a helper function.
-    
-    :param db: The parameter `db` is of type `Session` and is used as a dependency for the function
-    `get_all_province()`. It is likely that `get_db()` is a function that returns a database session
-    object, which is then passed as an argument to `get_all_province()`. The session
-    :type db: Session
-    :return: The function `get_all_province` is returning the result of calling the `get_all_province`
-    function from the `utils` module with the `db` parameter passed as an argument. The specific return
-    value depends on the implementation of the `get_all_province` function in the `utils` module.
-    """
-    return utils.get_all_province(db)
-
 @router.post('/province/', status_code=status.HTTP_201_CREATED)
 def create_province(request: schemas.ProvinceCreate, db: Session = Depends(get_db)):
     """
@@ -161,6 +146,22 @@ def create_province(request: schemas.ProvinceCreate, db: Session = Depends(get_d
     depends on the implementation of the `utils.create_province` function.
     """
     return utils.create_province(request, db)
+
+@router.get('/provinces/', status_code=status.HTTP_200_OK, response_model=None)
+def get_all_province(db: Session = Depends(get_db)):
+    """
+    This function retrieves all provinces from a database using a helper function.
+    
+    :param db: The parameter `db` is of type `Session` and is used as a dependency for the function
+    `get_all_province()`. It is likely that `get_db()` is a function that returns a database session
+    object, which is then passed as an argument to `get_all_province()`. The session
+    :type db: Session
+    :return: The function `get_all_province` is returning the result of calling the `get_all_province`
+    function from the `utils` module with the `db` parameter passed as an argument. The specific return
+    value depends on the implementation of the `get_all_province` function in the `utils` module.
+    """
+    return utils.get_all_province(db)
+
 
 @router.get('/province/{id}/', status_code=status.HTTP_200_OK, response_model=schemas.ShowProvince)
 def get_province(id: int, db: Session = Depends(get_db)):
@@ -241,4 +242,31 @@ def patch_province(id: int, request: schemas.UpdateProvince, db: Session = Depen
     depend on the implementation of the `utils.patch_province` function.
     """
     return utils.patch_province(id, request, db)
+
+
+
+@router.post('/district/', status_code=status.HTTP_201_CREATED)
+def create_district(request: schemas.DistrictCreate, db: Session = Depends(get_db)):
+    return utils.create_district(request, db)
+
+@router.get('/districts/', status_code=status.HTTP_200_OK, response_model=None)
+def get_all_district(db: Session = Depends(get_db)):
+    return utils.get_all_district(db)
+
+
+@router.get('/district/{id}/', status_code=status.HTTP_200_OK, response_model=schemas.ShowDistrict)
+def get_district(id: int, db: Session = Depends(get_db)):
+    return utils.get_district(id, db)
+
+@router.delete('/district/{id}/', status_code=status.HTTP_202_ACCEPTED, response_model=None)
+def delete_district(id: int, db: Session = Depends(get_db)):
+    return utils.delete_district(id, db)
+
+@router.put('/district/{id}/', status_code=status.HTTP_200_OK, response_model=None)
+def update_district(id: int, request: schemas.UpdateDistrict, db: Session = Depends(get_db)):
+    return utils.update_district(id, request, db)
+
+@router.patch('/district/{id}/', status_code=status.HTTP_200_OK, response_model=None)
+def patch_district(id: int, request: schemas.UpdateDistrict, db: Session = Depends(get_db)):
+    return utils.patch_district(id, request, db)
 

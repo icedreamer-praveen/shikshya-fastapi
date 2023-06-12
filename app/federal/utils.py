@@ -317,3 +317,163 @@ def patch_province(id: int, request: schemas.UpdateProvince, db: Session):
     db.commit()
     db.refresh(province)
     return province
+
+
+def create_district(request: schemas.DistrictCreate, db: Session):
+    """
+    This function creates a new district object in the database based on the provided request data.
+    
+    :param request: The request parameter is an instance of the DistrictCreate class defined in the
+    schemas module. It contains the data required to create a new district in the database, including
+    the district's title, title in Nepali language, code, order, and the province it belongs to
+    :type request: schemas.DistrictCreate
+    :param db: The "db" parameter is a database session object that is used to interact with the
+    database. It is passed as an argument to the function and is used to add the newly created district
+    object to the database, commit the changes, and refresh the object to ensure that it reflects any
+    changes made during the
+    :type db: Session
+    :return: The function `create_district` returns an instance of the `District` model that has been
+    created and added to the database.
+    """
+    district = models.District(
+        title = request.title,
+        title_ne = request.title_ne,
+        code = request.code,
+        order = request.order,
+        province = request.province
+    )
+    db.add(district)
+    db.commit()
+    db.refresh(district)
+    return district
+
+
+def get_all_district(db: Session):
+    """
+    This function retrieves all districts from a database using SQLAlchemy.
+    
+    :param db: Session object from SQLAlchemy. It is used to interact with the database and perform CRUD
+    operations
+    :type db: Session
+    :return: The function `get_all_district` returns a list of all the districts in the database.
+    """
+    district = db.query(models.District).all()
+    return district
+
+def get_district(id: int, db: Session):
+    """
+    The function retrieves a district from a database based on its ID and raises an exception if it is
+    not found.
+    
+    :param id: The id parameter is an integer representing the unique identifier of a district
+    :type id: int
+    :param db: The "db" parameter is a SQLAlchemy Session object, which is used to interact with the
+    database. It allows us to execute queries and perform CRUD (Create, Read, Update, Delete) operations
+    on the database
+    :type db: Session
+    :return: a district object from the database that matches the given id. If no district is found, it
+    raises an HTTPException with a 404 status code and a message indicating that the district with the
+    given id is not found.
+    """
+    district = db.query(models.District).filter(models.District.id == id).first()
+    if district is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"District with the id {id} is not found"
+        )
+    return district
+
+def delete_district(id: int, db: Session):
+    """
+    This function deletes a district from the database based on its ID.
+    
+    :param id: The id parameter is an integer that represents the unique identifier of the district that
+    needs to be deleted from the database
+    :type id: int
+    :param db: The "db" parameter is an instance of the SQLAlchemy Session class, which is used to
+    interact with the database. It allows the code to perform database operations such as querying,
+    inserting, updating, and deleting data. The Session class provides a transactional scope for all the
+    operations performed within it, which
+    :type db: Session
+    :return: a dictionary with a message indicating that the district was deleted successfully.
+    """
+    district = db.query(models.District).filter(models.District.id == id).first()
+    if district is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"District with the id {id} is not found"
+        )
+    db.delete(district)
+    db.commit()
+    return {
+        "message": "District deleted successfully"
+    }
+
+def update_district(id: int, request: schemas.UpdateDistrict, db: Session):
+    """
+    This function updates a district in the database based on the provided ID and request data.
+    
+    :param id: The id parameter is an integer that represents the unique identifier of the district that
+    needs to be updated
+    :type id: int
+    :param request: The request parameter is of type schemas.UpdateDistrict, which is a Pydantic model
+    representing the data to be updated for a district. It contains the fields and their updated values
+    for the district. The exclude_unset=True argument in the request.dict() method ensures that only the
+    fields that have been updated are
+    :type request: schemas.UpdateDistrict
+    :param db: The "db" parameter is a database session object that is used to interact with the
+    database. It is an instance of the SQLAlchemy Session class, which provides a high-level interface
+    for managing database transactions. The session object is used to query the database, make changes
+    to the data, and commit those changes
+    :type db: Session
+    :return: an instance of the updated district model.
+    """
+    district = db.query(models.District).filter(models.District.id == id).first()
+    if district is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"District with the id {id} is not found"
+        )
+    for field, value in request.dict(exclude_unset=True).items():
+        setattr(district, field, value)
+
+    db.commit()
+    db.refresh(district)
+    return district
+
+def patch_district(id: int, request: schemas.UpdateDistrict, db: Session):
+    """
+    This function updates a district in the database based on the provided request data.
+    
+    :param id: The id parameter is an integer that represents the unique identifier of the district that
+    needs to be updated
+    :type id: int
+    :param request: The request parameter is of type schemas.UpdateDistrict, which is a Pydantic model
+    that defines the fields that can be updated for a district. It contains the following fields:
+    :type request: schemas.UpdateDistrict
+    :param db: The `db` parameter is a database session object that allows the function to interact with
+    the database. It is used to query and update the database. The `Session` type indicates that this is
+    a SQLAlchemy session object
+    :type db: Session
+    :return: an instance of the updated district model.
+    """
+    district = db.query(models.District).filter(models.District.id == id).first()
+    if district is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"District with the id {id} is not found"
+        )
+    if request.title:
+        district.title = request.title
+    if request.title_ne:
+        district.title_ne = request.title_ne
+    if request.code:
+        district.code = request.code
+    if request.order:
+        district.order = request.order
+    if request.province:
+        district.province = request.province
+
+    db.commit()
+    db.refresh(district)
+    return district
