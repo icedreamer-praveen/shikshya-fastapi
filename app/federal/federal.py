@@ -11,7 +11,7 @@ router = APIRouter(
     tags=['Federal']
 )
 
-@router.post('/', status_code=status.HTTP_201_CREATED)
+@router.post('/country/', status_code=status.HTTP_201_CREATED)
 def create(request: schemas.CountryCreate, db: Session = Depends(get_db)):
     """
     This function creates a new country record in the database using the provided request data.
@@ -30,7 +30,7 @@ def create(request: schemas.CountryCreate, db: Session = Depends(get_db)):
     """
     return utils.create(request, db)
 
-@router.get('/', status_code=status.HTTP_200_OK, response_model=None)
+@router.get('/country/', status_code=status.HTTP_200_OK, response_model=None)
 def get_all(db: Session = Depends(get_db)):
     """
     This function retrieves all data from a database using a helper function.
@@ -45,7 +45,7 @@ def get_all(db: Session = Depends(get_db)):
     """
     return utils.get_all(db)
 
-@router.get('/{id}/', status_code=status.HTTP_200_OK, response_model=schemas.ShowCountry)
+@router.get('/country/{id}/', status_code=status.HTTP_200_OK, response_model=schemas.ShowCountry)
 def get_country(id: int, db: Session = Depends(get_db)):
     """
     This function retrieves a country from a database based on its ID.
@@ -64,7 +64,7 @@ def get_country(id: int, db: Session = Depends(get_db)):
     """
     return utils.get_country(id, db)
 
-@router.delete('/{id}/', status_code=status.HTTP_202_ACCEPTED, response_model=None)
+@router.delete('/country/{id}/', status_code=status.HTTP_202_ACCEPTED, response_model=None)
 def delete_country(id: int, db: Session = Depends(get_db)):
     """
     This function deletes a country from the database based on its ID.
@@ -83,7 +83,7 @@ def delete_country(id: int, db: Session = Depends(get_db)):
     """
     return utils.delete_country(id, db)
 
-@router.put('/{id}/', status_code=status.HTTP_200_OK, response_model=None)
+@router.put('/country/{id}/', status_code=status.HTTP_200_OK, response_model=None)
 def update_country(id: int, request: schemas.UpdateCountry, db: Session = Depends(get_db)):
     """
     This function updates a country in the database based on the provided ID and request data.
@@ -104,7 +104,7 @@ def update_country(id: int, request: schemas.UpdateCountry, db: Session = Depend
     """
     return utils.update_country(id, request, db)
 
-@router.patch('/{id}/', status_code=status.HTTP_200_OK, response_model=None)
+@router.patch('/country/{id}/', status_code=status.HTTP_200_OK, response_model=None)
 def patch_country(id: int, request: schemas.UpdateCountry, db: Session = Depends(get_db)):
     """
     This function patches a country in the database with the provided ID and request data.
