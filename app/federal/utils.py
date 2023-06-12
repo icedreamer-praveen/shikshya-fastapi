@@ -477,3 +477,160 @@ def patch_district(id: int, request: schemas.UpdateDistrict, db: Session):
     db.commit()
     db.refresh(district)
     return district
+
+
+def create_municipality(request: schemas.MunicipalityCreate, db: Session):
+    """
+    The function creates a new municipality in the database based on the input provided in the request
+    object.
+    
+    :param request: The request parameter is an instance of the MunicipalityCreate class defined in the
+    schemas module. It contains the data required to create a new municipality in the database,
+    including the municipality's title, title in Nepali language, code, order, and district
+    :type request: schemas.MunicipalityCreate
+    :param db: The "db" parameter is an instance of the SQLAlchemy Session class, which is used to
+    interact with the database. It allows us to perform database operations such as adding, updating,
+    and deleting records. In this function, the "db" parameter is used to add a new municipality record
+    to the database
+    :type db: Session
+    :return: an instance of the `Municipality` model that has been created and added to the database.
+    """
+    municipality = models.Municipality(
+        title = request.title,
+        title_ne = request.title_ne,
+        code = request.code,
+        order = request.order,
+        district = request.district
+    )
+    db.add(municipality)
+    db.commit()
+    db.refresh(municipality)
+    return municipality
+
+
+def get_all_municipality(db: Session):
+    """
+    This function retrieves all municipalities from a database.
+    
+    :param db: Session
+    :type db: Session
+    :return: The function `get_all_municipality` returns a list of all the municipalities in the
+    database.
+    """
+    municipality = db.query(models.Municipality).all()
+    return municipality
+
+def get_municipality(id: int, db: Session):
+    """
+    This function retrieves a municipality from a database based on its ID and raises an HTTPException
+    if it is not found.
+    
+    :param id: The id parameter is an integer that represents the unique identifier of a municipality
+    :type id: int
+    :param db: The "db" parameter is a SQLAlchemy session object that allows the function to interact
+    with the database. It is used to query the database for the municipality with the specified ID
+    :type db: Session
+    :return: a municipality object from the database that matches the given id. If no municipality is
+    found with the given id, it raises an HTTPException with a 404 status code and a message indicating
+    that the municipality is not found.
+    """
+    municipality = db.query(models.Municipality).filter(models.Municipality.id == id).first()
+    if municipality is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Municipality with the id {id} is not found"
+        )
+    return municipality
+
+def delete_municipality(id: int, db: Session):
+    """
+    This function deletes a municipality from the database based on its ID.
+    
+    :param id: The id parameter is an integer that represents the unique identifier of the municipality
+    that needs to be deleted from the database
+    :type id: int
+    :param db: The "db" parameter is an instance of the SQLAlchemy Session class, which is used to
+    interact with the database. It allows us to query, insert, update, and delete data from the
+    database. In this function, we use the "db" parameter to query the database for a municipality with
+    a
+    :type db: Session
+    :return: a dictionary with a message indicating that the municipality was deleted successfully.
+    """
+    municipality = db.query(models.Municipality).filter(models.Municipality.id == id).first()
+    if municipality is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Municipality with the id {id} is not found"
+        )
+    db.delete(municipality)
+    db.commit()
+    return {
+        "message": "Municipality deleted successfully"
+    }
+
+def update_municipality(id: int, request: schemas.UpdateMunicipality, db: Session):
+    """
+    This function updates a municipality in the database based on the provided ID and request data.
+    
+    :param id: The id parameter is an integer that represents the unique identifier of the municipality
+    that needs to be updated
+    :type id: int
+    :param request: schemas.UpdateMunicipality - This is a Pydantic model that defines the fields that
+    can be updated for a municipality
+    :type request: schemas.UpdateMunicipality
+    :param db: The `db` parameter is a SQLAlchemy session object that allows the function to interact
+    with the database. It is used to query the database for the municipality with the given `id`, update
+    its fields with the values provided in the `request` parameter, and commit the changes to the
+    database
+    :type db: Session
+    :return: an instance of the updated municipality model.
+    """
+    municipality = db.query(models.Municipality).filter(models.Municipality.id == id).first()
+    if municipality is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Municipality with the id {id} is not found"
+        )
+    for field, value in request.dict(exclude_unset=True).items():
+        setattr(municipality, field, value)
+
+    db.commit()
+    db.refresh(municipality)
+    return municipality
+
+def patch_municipality(id: int, request: schemas.UpdateMunicipality, db: Session):
+    """
+    This function updates a municipality in the database based on the provided ID and request data.
+    
+    :param id: The ID of the municipality to be updated
+    :type id: int
+    :param request: The request parameter is of type schemas.UpdateMunicipality, which is a Pydantic
+    model representing the data to be updated for a municipality. It contains optional fields for title,
+    title_ne, code, order, and district
+    :type request: schemas.UpdateMunicipality
+    :param db: The `db` parameter is an instance of a database session, which is used to interact with
+    the database and perform CRUD (Create, Read, Update, Delete) operations on the data. It is passed as
+    an argument to the function so that the function can access the database and make changes to it
+    :type db: Session
+    :return: an instance of the updated municipality model.
+    """
+    municipality = db.query(models.Municipality).filter(models.Municipality.id == id).first()
+    if municipality is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Municipality with the id {id} is not found"
+        )
+    if request.title:
+        municipality.title = request.title
+    if request.title_ne:
+        municipality.title_ne = request.title_ne
+    if request.code:
+        municipality.code = request.code
+    if request.order:
+        municipality.order = request.order
+    if request.district:
+        municipality.district = request.district
+
+    db.commit()
+    db.refresh(municipality)
+    return municipality

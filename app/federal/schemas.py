@@ -71,3 +71,28 @@ class ShowDistrict(BaseModel):
 
     class Config():
         orm_mode = True
+
+
+class MunicipalityCreate(BaseModel):
+    title: Optional[str]
+    title_ne: Optional[str]
+    code: Optional[str] = None
+    order: Optional[int] = 0
+    district: int
+
+class UpdateMunicipality(BaseModel):
+    title: Optional[str]
+    title_ne: Optional[str]
+    code: Optional[str]
+    order: Optional[int]
+    district: Optional[int]
+
+class ShowMunicipality(BaseModel):
+    title: Optional[str]
+    title_ne: Optional[str]
+    code: Optional[str]
+    order: Optional[int]
+    district: Optional[int]
+
+    class Config():
+        orm_mode = True

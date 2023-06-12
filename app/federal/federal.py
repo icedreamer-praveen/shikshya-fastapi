@@ -247,26 +247,235 @@ def patch_province(id: int, request: schemas.UpdateProvince, db: Session = Depen
 
 @router.post('/district/', status_code=status.HTTP_201_CREATED)
 def create_district(request: schemas.DistrictCreate, db: Session = Depends(get_db)):
+    """
+    This function creates a district using the input data and database connection.
+    
+    :param request: The request parameter is an instance of the DistrictCreate schema, which is used to
+    validate and deserialize the incoming request data for creating a new district. It contains the
+    necessary information such as the district name, state, and country
+    :type request: schemas.DistrictCreate
+    :param db: The "db" parameter is a database session object that is created using the "get_db"
+    function. It is used to interact with the database and perform CRUD (Create, Read, Update, Delete)
+    operations on the data. The session object is passed to the function as a dependency using the "
+    :type db: Session
+    :return: The function `create_district` is returning the result of calling the
+    `utils.create_district` function with the `request` and `db` arguments. The specific return value
+    depends on the implementation of the `utils.create_district` function.
+    """
     return utils.create_district(request, db)
 
 @router.get('/districts/', status_code=status.HTTP_200_OK, response_model=None)
 def get_all_district(db: Session = Depends(get_db)):
+    """
+    This function retrieves all districts from a database using a helper function.
+    
+    :param db: The parameter `db` is of type `Session` and is used as a dependency for the function
+    `get_all_district`. It is likely that this function is part of a FastAPI application and `Session`
+    is an instance of a database session that is created and managed by an ORM (Object-
+    :type db: Session
+    :return: The function `get_all_district` is returning the result of calling the `get_all_district`
+    function from the `utils` module, which is likely a list of all the districts in the database.
+    """
     return utils.get_all_district(db)
 
 
 @router.get('/district/{id}/', status_code=status.HTTP_200_OK, response_model=schemas.ShowDistrict)
 def get_district(id: int, db: Session = Depends(get_db)):
+    """
+    This function retrieves a district from a database based on its ID.
+    
+    :param id: The id parameter is an integer that represents the unique identifier of a district
+    :type id: int
+    :param db: The parameter `db` is a dependency injection that is used to get a database session. It
+    is of type `Session` which is a class from the SQLAlchemy library that represents a database
+    session. The `Depends` function is used to declare a dependency on the `get_db` function which
+    returns
+    :type db: Session
+    :return: The function `get_district()` is being returned, which takes an integer `id` and a database
+    session `db` as input parameters, and returns the result of calling the `utils.get_district()`
+    function with the same input parameters. The specific output of `utils.get_district()` depends on
+    its implementation.
+    """
     return utils.get_district(id, db)
 
 @router.delete('/district/{id}/', status_code=status.HTTP_202_ACCEPTED, response_model=None)
 def delete_district(id: int, db: Session = Depends(get_db)):
+    """
+    This function deletes a district from the database based on its ID.
+    
+    :param id: The id parameter is an integer that represents the unique identifier of a district that
+    needs to be deleted from the database
+    :type id: int
+    :param db: The parameter `db` is of type `Session` and is a dependency that is obtained using the
+    `get_db` function. It is used to access the database and perform CRUD (Create, Read, Update, Delete)
+    operations on the data. The `Session` object represents a transactional scope
+    :type db: Session
+    :return: The function `delete_district` is being returned, which takes two arguments: `id` of type
+    `int` and `db` of type `Session`. The function is defined in the `utils` module and is responsible
+    for deleting a district from the database based on the given `id`. The `db` argument is obtained
+    using the `get_db` function, which returns a database session.
+    """
     return utils.delete_district(id, db)
 
 @router.put('/district/{id}/', status_code=status.HTTP_200_OK, response_model=None)
 def update_district(id: int, request: schemas.UpdateDistrict, db: Session = Depends(get_db)):
+    """
+    This function updates a district in the database based on the provided ID and request data.
+    
+    :param id: The ID of the district that needs to be updated
+    :type id: int
+    :param request: schemas.UpdateDistrict is a Pydantic model that defines the structure of the data
+    that is expected to be received in the request body. It is used to validate and parse the incoming
+    data
+    :type request: schemas.UpdateDistrict
+    :param db: The "db" parameter is a database session object that is passed to the function using the
+    "Depends" function from the FastAPI framework. This allows the function to access the database and
+    perform CRUD (Create, Read, Update, Delete) operations on the data. The session object is created
+    and
+    :type db: Session
+    :return: The function `update_district` is returning the result of calling the
+    `utils.update_district` function with the provided arguments `id`, `request`, and `db`. The specific
+    return value will depend on the implementation of the `utils.update_district` function.
+    """
     return utils.update_district(id, request, db)
 
 @router.patch('/district/{id}/', status_code=status.HTTP_200_OK, response_model=None)
 def patch_district(id: int, request: schemas.UpdateDistrict, db: Session = Depends(get_db)):
+    """
+    This function patches a district in the database with the provided ID and request data.
+    
+    :param id: The id parameter is an integer that represents the unique identifier of a district in the
+    database
+    :type id: int
+    :param request: schemas.UpdateDistrict is likely a Pydantic model that defines the structure and
+    validation rules for the request body of the API endpoint. It could contain fields such as name,
+    population, area, etc. that can be updated for a district
+    :type request: schemas.UpdateDistrict
+    :param db: The "db" parameter is a dependency injection that provides a database session to the
+    function. It is used to interact with the database and perform CRUD (Create, Read, Update, Delete)
+    operations. The "Session" type is imported from the SQLAlchemy library and represents a connection
+    to the database. The
+    :type db: Session
+    :return: The function `patch_district` is returning the result of calling the `utils.patch_district`
+    function with the provided arguments `id`, `request`, and `db`. The specific return value will
+    depend on the implementation of the `utils.patch_district` function.
+    """
     return utils.patch_district(id, request, db)
 
+
+@router.post('/municipality/', status_code=status.HTTP_201_CREATED)
+def create_municipality(request: schemas.MunicipalityCreate, db: Session = Depends(get_db)):
+    """
+    This function creates a municipality using the provided request data and database connection.
+    
+    :param request: The request parameter is an instance of the MunicipalityCreate schema, which is used
+    to validate and deserialize the incoming request data for creating a new municipality. It contains
+    attributes such as the municipality name, state, and country
+    :type request: schemas.MunicipalityCreate
+    :param db: The parameter `db` is a database session object that is created using the `get_db`
+    function. It is used to interact with the database and perform CRUD (Create, Read, Update, Delete)
+    operations on the data. The `Session` object is provided by the SQLAlchemy ORM (Object-
+    :type db: Session
+    :return: The function `create_municipality` is returning the result of calling the
+    `utils.create_municipality` function with the `request` and `db` arguments. The specific return
+    value depends on the implementation of the `utils.create_municipality` function.
+    """
+    return utils.create_municipality(request, db)
+
+@router.get('/municipalities/', status_code=status.HTTP_200_OK, response_model=None)
+def get_all_municipality(db: Session = Depends(get_db)):
+    """
+    This function retrieves all municipalities from a database using a helper function.
+    
+    :param db: The parameter `db` is of type `Session` and is a dependency that is obtained using the
+    `get_db` function. It is used to access the database session and perform database operations. The
+    `Session` type is typically used in SQLAlchemy to represent a database session, which is a
+    transactional
+    :type db: Session
+    :return: The function `get_all_municipality` is returning the result of calling the
+    `get_all_municipality` function from the `utils` module, passing in the `db` parameter. The specific
+    return value depends on the implementation of the `get_all_municipality` function in the `utils`
+    module.
+    """
+    return utils.get_all_municipality(db)
+
+
+@router.get('/municipality/{id}/', status_code=status.HTTP_200_OK, response_model=schemas.ShowMunicipality)
+def get_municipality(id: int, db: Session = Depends(get_db)):
+    """
+    This function retrieves a municipality from a database based on its ID.
+    
+    :param id: The id parameter is an integer that represents the unique identifier of a municipality
+    :type id: int
+    :param db: The parameter `db` is a dependency injection that is used to get a database session
+    object. It is of type `Session` which is a class from the SQLAlchemy library that represents a
+    transactional database session. The `get_db` function is responsible for creating a new database
+    session for each request and
+    :type db: Session
+    :return: The function `get_municipality` is being returned, which takes an integer `id` and a
+    database session `db` as input parameters, and calls the `utils.get_municipality` function with
+    these parameters to retrieve the municipality information from the database.
+    """
+    return utils.get_municipality(id, db)
+
+@router.delete('/municipality/{id}/', status_code=status.HTTP_202_ACCEPTED, response_model=None)
+def delete_municipality(id: int, db: Session = Depends(get_db)):
+    """
+    This function deletes a municipality from a database using its ID.
+    
+    :param id: The id parameter is an integer that represents the unique identifier of a municipality
+    that needs to be deleted from the database
+    :type id: int
+    :param db: The "db" parameter is a dependency injection that provides a database session to the
+    function. It is used to interact with the database and perform CRUD (Create, Read, Update, Delete)
+    operations. The "Session" type indicates that it is a SQLAlchemy session object. The "Depends"
+    function
+    :type db: Session
+    :return: The function `delete_municipality` is returning the result of calling the
+    `utils.delete_municipality` function with the provided `id` and `db` arguments. The specific return
+    value will depend on the implementation of the `utils.delete_municipality` function.
+    """
+    return utils.delete_municipality(id, db)
+
+@router.put('/municipality/{id}/', status_code=status.HTTP_200_OK, response_model=None)
+def update_municipality(id: int, request: schemas.UpdateMunicipality, db: Session = Depends(get_db)):
+    """
+    This function updates a municipality in the database based on the provided ID and request data.
+    
+    :param id: The ID of the municipality that needs to be updated
+    :type id: int
+    :param request: The `request` parameter is of type `schemas.UpdateMunicipality`, which is a Pydantic
+    model representing the data that is being sent in the request body. This parameter is used to update
+    an existing municipality in the database
+    :type request: schemas.UpdateMunicipality
+    :param db: The "db" parameter is a database session object that is created using the "get_db"
+    function. It is used to interact with the database and perform CRUD (Create, Read, Update, Delete)
+    operations on the "Municipality" table. The session object is passed as a dependency to
+    :type db: Session
+    :return: The function `update_municipality` is returning the result of calling the
+    `utils.update_municipality` function with the provided parameters `id`, `request`, and `db`. The
+    specific return value will depend on the implementation of the `utils.update_municipality` function.
+    """
+    return utils.update_municipality(id, request, db)
+
+@router.patch('/municipality/{id}/', status_code=status.HTTP_200_OK, response_model=None)
+def patch_municipality(id: int, request: schemas.UpdateMunicipality, db: Session = Depends(get_db)):
+    """
+    This function patches a municipality record in the database with the provided ID and request data.
+    
+    :param id: an integer representing the ID of the municipality to be updated
+    :type id: int
+    :param request: The request parameter is of type schemas.UpdateMunicipality, which is a Pydantic
+    model representing the data to be updated for a municipality. It contains the fields that can be
+    updated for a municipality such as name, population, and area
+    :type request: schemas.UpdateMunicipality
+    :param db: The "db" parameter is a database session object that is created using the "get_db"
+    function. It is used to interact with the database and perform CRUD (Create, Read, Update, Delete)
+    operations on the municipality data. The session object is passed as a dependency to the function
+    using the
+    :type db: Session
+    :return: The function `patch_municipality` is returning the result of calling the
+    `utils.patch_municipality` function with the provided parameters `id`, `request`, and `db`. The
+    specific return value of `utils.patch_municipality` is not specified in this code snippet.
+    """
+    return utils.patch_municipality(id, request, db)
