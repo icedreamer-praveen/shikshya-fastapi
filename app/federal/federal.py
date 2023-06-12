@@ -82,3 +82,24 @@ def delete_country(id: int, db: Session = Depends(get_db)):
     dependency that is obtained using the `get_db()` function.
     """
     return utils.delete_country(id, db)
+
+@router.put('/{id}/', status_code=status.HTTP_200_OK, response_model=None)
+def update_country(id: int, request: schemas.UpdateCountry, db: Session = Depends(get_db)):
+    """
+    This function updates a country in the database based on the provided ID and request data.
+    
+    :param id: The ID of the country that needs to be updated
+    :type id: int
+    :param request: schemas.UpdateCountry is likely a Pydantic model/schema that defines the structure
+    and data types of the request body for updating a country in the API. It could include fields such
+    as the country's name, population, capital city, etc
+    :type request: schemas.UpdateCountry
+    :param db: The "db" parameter is a database session object that is passed to the function using the
+    "Depends" function from the FastAPI framework. This session object is used to interact with the
+    database and perform CRUD (Create, Read, Update, Delete) operations on the "Country" table. The
+    :type db: Session
+    :return: The function `update_country` is returning the result of calling the `utils.update_country`
+    function with the provided parameters `id`, `request`, and `db`. The specific return value of
+    `utils.update_country` will depend on the implementation of that function.
+    """
+    return utils.update_country(id, request, db)

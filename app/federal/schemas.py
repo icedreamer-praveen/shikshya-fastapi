@@ -12,7 +12,13 @@ class ShowCountry(BaseModel):
     title: Optional[str]
     title_ne: Optional[str]
     code: Optional[str]
-    order: Optional[str]
+    order: Optional[int]
 
     class Config():
         orm_mode = True
+
+class UpdateCountry(BaseModel):
+    title: Optional[str]
+    title_ne: Optional[str]
+    code: Optional[str]
+    order: Optional[int]

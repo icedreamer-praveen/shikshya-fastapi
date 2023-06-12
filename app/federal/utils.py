@@ -84,10 +84,43 @@ def delete_country(id: int, db: Session):
     if country is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Country with the id {id} is not found."
+            detail=f"Country with the id {id} is not found"
         )
     db.delete(country)
     db.commit()
     return {
         "message": "Country deleted successfully"
     }
+
+def update_country(id: int, request: schemas.UpdateCountry, db: Session):
+    """
+    This function updates a country in the database based on the provided ID and request data.
+    
+    :param id: The id parameter is an integer that represents the unique identifier of the country that
+    needs to be updated
+    :type id: int
+    :param request: schemas.UpdateCountry - This is a Pydantic model that defines the structure of the
+    request body for updating a country
+    :type request: schemas.UpdateCountry
+    :param db: The "db" parameter is an instance of a database session, which is used to interact with
+    the database and perform CRUD (Create, Read, Update, Delete) operations on the data. It is passed as
+    an argument to the function so that the function can access the database and make changes to it
+    :type db: Session
+    :return: an instance of the updated country model.
+    """
+    country = db.query(models.Country).filter(models.Country.id == id).first()
+    if country is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"country with the id {id} is not found"
+        )
+    country = models.Country(
+        title = request.title,
+        title_ne = request.title_ne,
+        code = request.code,
+        order = request.order
+    )
+    db.add(country)
+    db.commit()
+    db.refresh(country)
+    return country
