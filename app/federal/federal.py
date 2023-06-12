@@ -103,3 +103,24 @@ def update_country(id: int, request: schemas.UpdateCountry, db: Session = Depend
     `utils.update_country` will depend on the implementation of that function.
     """
     return utils.update_country(id, request, db)
+
+@router.patch('/{id}/', status_code=status.HTTP_200_OK, response_model=None)
+def patch_country(id: int, request: schemas.UpdateCountry, db: Session = Depends(get_db)):
+    """
+    This function patches a country in the database with the provided ID and request data.
+    
+    :param id: an integer representing the ID of the country to be updated
+    :type id: int
+    :param request: The `request` parameter is of type `schemas.UpdateCountry`, which is a Pydantic
+    model representing the data to be updated for a country in the database. This parameter is used by
+    the `utils.patch_country` function to update the country record in the database
+    :type request: schemas.UpdateCountry
+    :param db: The "db" parameter is a dependency injection that provides a database session to the
+    function. It is used to interact with the database and perform CRUD (Create, Read, Update, Delete)
+    operations. The "Session" type is likely referring to a SQLAlchemy session object
+    :type db: Session
+    :return: The function `patch_country` is returning the result of calling the `utils.patch_country`
+    function with the provided arguments `id`, `request`, and `db`. The specific return value will
+    depend on the implementation of the `utils.patch_country` function.
+    """
+    return utils.patch_country(id, request, db)

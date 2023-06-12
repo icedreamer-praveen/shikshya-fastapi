@@ -99,12 +99,13 @@ def update_country(id: int, request: schemas.UpdateCountry, db: Session):
     :param id: The id parameter is an integer that represents the unique identifier of the country that
     needs to be updated
     :type id: int
-    :param request: schemas.UpdateCountry - This is a Pydantic model that defines the structure of the
-    request body for updating a country
+    :param request: schemas.UpdateCountry is a Pydantic model that defines the fields that can be
+    updated for a country. It is used to validate the request body sent by the client
     :type request: schemas.UpdateCountry
-    :param db: The "db" parameter is an instance of a database session, which is used to interact with
-    the database and perform CRUD (Create, Read, Update, Delete) operations on the data. It is passed as
-    an argument to the function so that the function can access the database and make changes to it
+    :param db: The parameter `db` is a database session object. It is used to interact with the database
+    and perform CRUD (Create, Read, Update, Delete) operations on the data. The session object is
+    created using a database engine and represents a transactional scope, which means that all changes
+    made to the
     :type db: Session
     :return: an instance of the updated country model.
     """
@@ -114,13 +115,44 @@ def update_country(id: int, request: schemas.UpdateCountry, db: Session):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"country with the id {id} is not found"
         )
-    country = models.Country(
-        title = request.title,
-        title_ne = request.title_ne,
-        code = request.code,
-        order = request.order
-    )
-    db.add(country)
+    for field, value in request.dict(exclude_unset=True).items():
+        setattr(country, field, value)
+
+    db.commit()
+    db.refresh(country)
+    return country
+
+def patch_country(id: int, request: schemas.UpdateCountry, db: Session):
+    """
+    This function updates a country in the database based on the provided ID and request data.
+    
+    :param id: The ID of the country that needs to be updated
+    :type id: int
+    :param request: The request parameter is of type schemas.UpdateCountry, which is a Pydantic model
+    representing the data to be updated for a country. It contains four optional fields: title,
+    title_ne, code, and order
+    :type request: schemas.UpdateCountry
+    :param db: The `db` parameter is a database session object, which is used to interact with the
+    database and perform CRUD (Create, Read, Update, Delete) operations on the data. It is passed as an
+    argument to the function so that the function can access the database and make changes to it. The
+    :type db: Session
+    :return: an instance of the updated country model.
+    """
+    country = db.query(models.Country).filter(models.Country.id == id).first()
+    if country is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Country with the id {id} is not found"
+        )
+    if request.title:
+        country.title = request.title
+    if request.title_ne:
+        country.title_ne = request.title_ne
+    if request.code:
+        country.code = request.code
+    if request.order:
+        country.order = request.order
+
     db.commit()
     db.refresh(country)
     return country
