@@ -30,16 +30,6 @@ class ProvinceCreate(BaseModel):
     order: Optional[int] = 0
     country: int
 
-class ShowProvince(BaseModel):
-    title: Optional[str]
-    title_ne: Optional[str]
-    code: Optional[str]
-    order: Optional[int]
-    country: Optional[int]
-
-    class Config():
-        orm_mode = True
-
 class UpdateProvince(BaseModel):
     title: Optional[str]
     title_ne: Optional[str]

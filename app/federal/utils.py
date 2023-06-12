@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from app.federal import models, schemas
 
 
-def create(request: schemas.CountryCreate, db: Session):
+def create_country(request: schemas.CountryCreate, db: Session):
     """
     The function creates a new country object in the database based on the input data.
     
@@ -158,6 +158,35 @@ def patch_country(id: int, request: schemas.UpdateCountry, db: Session):
     return country
 
 
+def create_province(request: schemas.ProvinceCreate, db: Session):
+    """
+    This function creates a new province in the database based on the provided request data.
+    
+    :param request: schemas.ProvinceCreate - This is a Pydantic model that defines the structure of the
+    request body for creating a new province. It contains the following fields: title (str), title_ne
+    (str), code (str), order (int), and country (str)
+    :type request: schemas.ProvinceCreate
+    :param db: The "db" parameter is a database session object that is used to interact with the
+    database. It is passed as an argument to the function and is used to add the newly created province
+    object to the database, commit the changes, and refresh the object to ensure that it reflects any
+    changes made during the
+    :type db: Session
+    :return: The function `create_province` returns an instance of the `Province` model that has been
+    created and added to the database.
+    """
+    province = models.Province(
+        title = request.title,
+        title_ne = request.title_ne,
+        code = request.code,
+        order = request.order,
+        country = request.country
+    )
+    db.add(province)
+    db.commit()
+    db.refresh(province)
+    return province
+
+
 def get_all_province(db: Session):
     """
     This function retrieves all provinces from a database using SQLAlchemy.
@@ -170,4 +199,27 @@ def get_all_province(db: Session):
     :return: The function `get_all_province` returns a list of all the provinces in the database.
     """
     province = db.query(models.Province).all()
+    return province
+
+def get_province(id: int, db: Session):
+    """
+    The function retrieves a province from a database based on its ID and raises an exception if it is
+    not found.
+    
+    :param id: The id parameter is an integer that represents the unique identifier of a province
+    :type id: int
+    :param db: The "db" parameter is a SQLAlchemy Session object, which is used to interact with the
+    database. It allows the function to execute queries and perform CRUD (Create, Read, Update, Delete)
+    operations on the database
+    :type db: Session
+    :return: The function `get_province` returns a `Province` object from the database that matches the
+    given `id`. If no such object is found, it raises an HTTPException with a 404 status code and a
+    message indicating that the province with the given id was not found.
+    """
+    province = db.query(models.Province).filter(models.Province.id == id).first()
+    if province is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Province with the id {id} is not found"
+        )
     return province

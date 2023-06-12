@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 @router.post('/country/', status_code=status.HTTP_201_CREATED)
-def create(request: schemas.CountryCreate, db: Session = Depends(get_db)):
+def create_country(request: schemas.CountryCreate, db: Session = Depends(get_db)):
     """
     This function creates a new country record in the database using the provided request data.
     
@@ -28,9 +28,9 @@ def create(request: schemas.CountryCreate, db: Session = Depends(get_db)):
     the `request` and `db` arguments. The specific return value depends on the implementation of the
     `utils.create` function.
     """
-    return utils.create(request, db)
+    return utils.create_country(request, db)
 
-@router.get('/country/', status_code=status.HTTP_200_OK, response_model=None)
+@router.get('/countries/', status_code=status.HTTP_200_OK, response_model=None)
 def get_all_country(db: Session = Depends(get_db)):
     """
     This function retrieves all data from a database using a helper function.
@@ -126,7 +126,7 @@ def patch_country(id: int, request: schemas.UpdateCountry, db: Session = Depends
     return utils.patch_country(id, request, db)
 
 
-@router.get('/province/', status_code=status.HTTP_200_OK, response_model=None)
+@router.get('/provinces/', status_code=status.HTTP_200_OK, response_model=None)
 def get_all_province(db: Session = Depends(get_db)):
     """
     This function retrieves all provinces from a database using a helper function.
@@ -140,3 +140,42 @@ def get_all_province(db: Session = Depends(get_db)):
     value depends on the implementation of the `get_all_province` function in the `utils` module.
     """
     return utils.get_all_province(db)
+
+@router.post('/province/', status_code=status.HTTP_201_CREATED)
+def create_province(request: schemas.ProvinceCreate, db: Session = Depends(get_db)):
+    """
+    This function creates a province using the provided request data and database connection.
+    
+    :param request: The request parameter is an instance of the ProvinceCreate schema, which is used to
+    validate and deserialize the incoming request data for creating a new province. It contains the
+    necessary fields and their data types for creating a new province, such as the province name,
+    country ID, and population
+    :type request: schemas.ProvinceCreate
+    :param db: db is a parameter that represents the database session. It is of type Session, which is a
+    class provided by the SQLAlchemy library. The session is used to interact with the database and
+    perform CRUD (Create, Read, Update, Delete) operations on the database tables. The session is
+    created and managed by
+    :type db: Session
+    :return: The function `create_province` is returning the result of calling the
+    `utils.create_province` function with the `request` and `db` arguments. The specific return value
+    depends on the implementation of the `utils.create_province` function.
+    """
+    return utils.create_province(request, db)
+
+@router.get('/province/{id}/', status_code=status.HTTP_200_OK, response_model=None)
+def get_province(id: int, db: Session = Depends(get_db)):
+    """
+    This function retrieves a province from a database based on its ID.
+    
+    :param id: The id parameter is an integer that represents the unique identifier of a province. It is
+    used to retrieve information about a specific province from the database
+    :type id: int
+    :param db: The parameter `db` is a dependency injection that is used to get a database session. It
+    is of type `Session` which is a class from the SQLAlchemy library that represents a transactional
+    database session. The `get_db` function is responsible for creating a new database session for each
+    request and closing
+    :type db: Session
+    :return: The function `get_province` is returning the result of calling the `utils.get_province`
+    function with the `id` parameter and the `db` parameter obtained from the `get_db` dependency.
+    """
+    return utils.get_province(id, db)
