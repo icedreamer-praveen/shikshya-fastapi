@@ -44,3 +44,41 @@ def get_all(db: Session = Depends(get_db)):
     implementation of the `get_all` function in the `utils` module.
     """
     return utils.get_all(db)
+
+@router.get('/{id}/', status_code=status.HTTP_200_OK, response_model=schemas.ShowCountry)
+def get_country(id: int, db: Session = Depends(get_db)):
+    """
+    This function retrieves a country from a database based on its ID.
+    
+    :param id: The id parameter is an integer that represents the unique identifier of a country in a
+    database
+    :type id: int
+    :param db: db is a parameter of type Session that is used to access the database. It is obtained
+    using the get_db function which returns a new session for each request. The session is used to query
+    the database and perform CRUD operations. The Session object is provided by the SQLAlchemy ORM
+    (Object-Relational Mapping
+    :type db: Session
+    :return: The function `get_country()` is returning the result of calling the `utils.get_country()`
+    function with the `id` parameter and the `db` parameter obtained from the `get_db()` function. The
+    specific return value depends on the implementation of the `utils.get_country()` function.
+    """
+    return utils.get_country(id, db)
+
+@router.delete('/{id}/', status_code=status.HTTP_202_ACCEPTED, response_model=None)
+def delete_country(id: int, db: Session = Depends(get_db)):
+    """
+    This function deletes a country from the database based on its ID.
+    
+    :param id: The id parameter is an integer that represents the unique identifier of a country in the
+    database. It is used to identify the country that needs to be deleted
+    :type id: int
+    :param db: The parameter `db` is of type `Session` and is a dependency that is obtained using the
+    `get_db` function. It is used to access the database and perform CRUD (Create, Read, Update, Delete)
+    operations on the `Country` table. The `Session` object represents a
+    :type db: Session
+    :return: The function `delete_country()` is being returned, which takes two arguments: `id` of type
+    `int` and `db` of type `Session`. The function is defined in a separate module called `utils` and is
+    responsible for deleting a country from the database based on the given `id`. The `db` argument is a
+    dependency that is obtained using the `get_db()` function.
+    """
+    return utils.delete_country(id, db)
