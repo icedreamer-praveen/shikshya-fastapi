@@ -31,7 +31,7 @@ def create(request: schemas.CountryCreate, db: Session = Depends(get_db)):
     return utils.create(request, db)
 
 @router.get('/country/', status_code=status.HTTP_200_OK, response_model=None)
-def get_all(db: Session = Depends(get_db)):
+def get_all_country(db: Session = Depends(get_db)):
     """
     This function retrieves all data from a database using a helper function.
     
@@ -43,7 +43,7 @@ def get_all(db: Session = Depends(get_db)):
     `utils` module, passing in the `db` parameter. The specific return value depends on the
     implementation of the `get_all` function in the `utils` module.
     """
-    return utils.get_all(db)
+    return utils.get_all_country(db)
 
 @router.get('/country/{id}/', status_code=status.HTTP_200_OK, response_model=schemas.ShowCountry)
 def get_country(id: int, db: Session = Depends(get_db)):
@@ -124,3 +124,19 @@ def patch_country(id: int, request: schemas.UpdateCountry, db: Session = Depends
     depend on the implementation of the `utils.patch_country` function.
     """
     return utils.patch_country(id, request, db)
+
+
+@router.get('/province/', status_code=status.HTTP_200_OK, response_model=None)
+def get_all_province(db: Session = Depends(get_db)):
+    """
+    This function retrieves all provinces from a database using a helper function.
+    
+    :param db: The parameter `db` is of type `Session` and is used as a dependency for the function
+    `get_all_province()`. It is likely that `get_db()` is a function that returns a database session
+    object, which is then passed as an argument to `get_all_province()`. The session
+    :type db: Session
+    :return: The function `get_all_province` is returning the result of calling the `get_all_province`
+    function from the `utils` module with the `db` parameter passed as an argument. The specific return
+    value depends on the implementation of the `get_all_province` function in the `utils` module.
+    """
+    return utils.get_all_province(db)

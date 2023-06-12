@@ -29,7 +29,7 @@ def create(request: schemas.CountryCreate, db: Session):
     db.refresh(country)
     return country
 
-def get_all(db: Session):
+def get_all_country(db: Session):
     """
     This function retrieves all the country records from the database using SQLAlchemy's query method.
     
@@ -156,3 +156,18 @@ def patch_country(id: int, request: schemas.UpdateCountry, db: Session):
     db.commit()
     db.refresh(country)
     return country
+
+
+def get_all_province(db: Session):
+    """
+    This function retrieves all provinces from a database using SQLAlchemy.
+    
+    :param db: The parameter `db` is of type `Session`. It is likely that this function is part of a
+    larger application that uses an Object Relational Mapper (ORM) such as SQLAlchemy to interact with a
+    database. The `Session` object represents a transactional scope for interacting with the database.
+    It provides
+    :type db: Session
+    :return: The function `get_all_province` returns a list of all the provinces in the database.
+    """
+    province = db.query(models.Province).all()
+    return province
