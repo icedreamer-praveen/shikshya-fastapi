@@ -179,3 +179,23 @@ def get_province(id: int, db: Session = Depends(get_db)):
     function with the `id` parameter and the `db` parameter obtained from the `get_db` dependency.
     """
     return utils.get_province(id, db)
+
+@router.delete('/province/{id}/', status_code=status.HTTP_202_ACCEPTED, response_model=None)
+def delete_province(id: int, db: Session = Depends(get_db)):
+    """
+    This function deletes a province from the database based on its ID.
+    
+    :param id: The id parameter is an integer that represents the unique identifier of a province that
+    needs to be deleted from the database
+    :type id: int
+    :param db: The parameter `db` is of type `Session` and is a dependency that is obtained using the
+    `get_db` function. It is used to access the database and perform CRUD (Create, Read, Update, Delete)
+    operations on the `Province` table. The `Session` object represents a
+    :type db: Session
+    :return: The function `delete_province` is being returned, which takes two arguments: `id` of type
+    `int` and `db` of type `Session`. The function is defined in a separate module called `utils`. The
+    purpose of the function is to delete a province from the database based on the given `id`. The
+    function is executed using the `db` session obtained from the `get_db
+    """
+    return utils.delete_province(id, db)
+

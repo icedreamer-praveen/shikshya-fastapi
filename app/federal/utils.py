@@ -223,3 +223,29 @@ def get_province(id: int, db: Session):
             detail=f"Province with the id {id} is not found"
         )
     return province
+
+def delete_province(id: int, db: Session):
+    """
+    This function deletes a province from the database based on its ID.
+    
+    :param id: The id parameter is an integer that represents the unique identifier of the province that
+    needs to be deleted from the database
+    :type id: int
+    :param db: The "db" parameter is an instance of the SQLAlchemy Session class, which is used to
+    interact with the database. It allows the code to perform database operations such as querying,
+    inserting, updating, and deleting data. The Session class provides a transactional scope for all the
+    operations performed within it, which
+    :type db: Session
+    :return: a dictionary with a message indicating that the province was deleted successfully.
+    """
+    province = db.query(models.Province).filter(models.Province.id == id).first()
+    if province is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Province with the id {id} is not found"
+        )
+    db.delete(province)
+    db.commit()
+    return {
+        "message": "Province deleted successfully"
+    }
